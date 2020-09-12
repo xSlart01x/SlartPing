@@ -1,0 +1,20 @@
+###################################################################
+#                                                                 #
+#                                                                 #
+#                                                                 #
+#                 Config.yml of the plugin SlartPing              #
+#                                                                 #
+#                 The plugin was created by xSlart01x             #
+#                                                                 #
+#                                                                 #
+#                                                                 #
+###################################################################
+
+prefix: "&6SlartPing &7>> "
+ping-msg: "&aIl tuo ping \u00e8 di &b%PING% &ams."
+ping-other-msg: "&aIl ping del giocatore &b %PLAYER% &a\u00e8 di &b%PING% &ams."
+no-permission: "&4Non hai il permesso per utilizzare questo comando."
+no-permission-others: "&4Non hai il permesso per visualizzare il ping di altri utenti."
+not-player: "&4Questo comando pu\u00f2 essere utilizzato solo in game!"
+not-online: "&cIl giocatore &a%PLAYER% &cnon \u00e8 online!"
+config-reload: "&eConfigurazione ricaricata."

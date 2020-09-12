@@ -1,0 +1,22 @@
+name: SlartPing
+main: eu.slart.ping.Main
+version: 1.0
+author: xSlart01x
+description: Mostra il ping di un giocatore.
+commands:
+   ping:
+      description: Mostra il ping di un giocatore.
+      usage: /ping o /ping [NomePlayer]
+   pingreload:
+      description: Ricarica la configurazione
+      usage: /pingreload
+permissions:
+   slartping.me: 
+      description: Accesso al comando /ping 
+      default: true
+   slartping.others:
+      description: Accesso al comando /ping [NomePlayer]
+      default: op
+   slartping.reload:
+      description: Accesso al comando /pingreload
+      default: op
