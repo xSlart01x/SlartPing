@@ -6,24 +6,32 @@ import org.bukkit.plugin.java.JavaPlugin;
 import eu.slart.ping.commands.CommandPing;
 import eu.slart.ping.commands.CommandReload;
 
-@SuppressWarnings("nls")
 public class Main extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		this.getLogger().info("SlartPing e' stato disabilitato correttamente!");
+		// Plugin disabled
+		this.getLogger().info("SlartPing has been successfully disabled!");
 	}
 
 	@Override
 	public void onEnable() {
+		// Saving default configuration
 		this.saveDefaultConfig();
 		this.getConfig().options().copyDefaults(true);
+		// Registering events
 		this.registerEvents();
-		this.getLogger().info("SlartPing e' stato abilitato correttamente!");
+		// Plugin enabled
+		this.getLogger().info("SlartPing has been successfully enabled!");
 	}
 
 	private void registerEvents() {
+		// Registering commands:
+		// Registering /ping
 		Bukkit.getPluginCommand("ping").setExecutor(new CommandPing(this));
+		// Registering /pingreload
 		Bukkit.getPluginCommand("pingreload").setExecutor(new CommandReload(this));
 	}
+
+	// End of code.
 }

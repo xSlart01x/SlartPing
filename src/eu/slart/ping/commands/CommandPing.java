@@ -9,66 +9,109 @@ import org.bukkit.entity.Player;
 import eu.slart.ping.Main;
 import eu.slart.ping.util.ChatReplacer;
 
-@SuppressWarnings("nls")
 public class CommandPing implements CommandExecutor {
 
 	private final Main instance;
-	private final String prefix;
+	private String prefix;
 
 	public CommandPing(final Main plugin) {
+		// Init instance
 		this.instance = plugin;
-		this.prefix = ChatReplacer.colorize(this.instance.getConfig().getString("prefix"));
 	}
 
 	@Override
 	public boolean onCommand(final CommandSender sender, final Command cmd, final String CommandLabel, final String[] args) {
+		// Init prefix
+		this.prefix = ChatReplacer.colorize(this.instance.getConfig().getString("prefix"));
+		// len == lenght of command arguments array
 		final int len = args.length;
-		if (len == 0) {
-			if (!(sender instanceof Player)) { return this.notPlayer(sender); }
-			if (!sender.hasPermission("slartping.me")) { return this.noPermission((Player) sender); }
-			return this.pingMe((Player) sender);
+		operations: {
+			// If len == 0 means that /ping was used without arguments
+			if (len == 0) {
+				// If sender is not instance of Player means that sender is console
+				if (!(sender instanceof Player)) {
+					// So, an error message will be returned. Then the command stops.
+					this.notPlayer(sender);
+					break operations;
+				}
+				// If sender hasn't permission
+				if (!sender.hasPermission("slartping.me")) {
+					// An error message will be returned. Then the command stops.
+					this.noPermission((Player) sender);
+					break operations;
+				}
+				// Otherwise, the command will send a message to the sender with its ping. Then
+				// the command stops.
+				this.pingMe((Player) sender);
+				break operations;
+			}
+			// At this point, we are working with arguments > 0
+			// So, the first argument is the player that the sender would like to ping.
+			final String playerArg = args[0];
+			// If pinged player name is equals to the sender name means that the sender
+			// would like to ping itself.
+			if (playerArg.equals(sender.getName())) {
+				// Same logic as before. If the sender hasn't permission to ping itself an error
+				// message will be returned. Then the command stops.
+				if (!sender.hasPermission("slartping.me")) {
+					this.noPermission((Player) sender);
+					break operations;
+				}
+				// Otherwise, the command will send a message to the sender with its ping. Then
+				// the command stops.
+				this.pingMe((Player) sender);
+				break operations;
+			}
+			// If pinged player is not sender and sender hasn't permission to ping other
+			// player,
+			// An error message will be returned. Then the command stops.
+			if (!sender.hasPermission("slartping.others")) {
+				this.noPermissionOthers((Player) sender);
+				break operations;
+			}
+			// Otherwise, we will try to get pinged player
+			final Player player = this.instance.getServer().getPlayer(playerArg);
+			// If pinged player doesn't exist or it's not online, an error message will be
+			// returned. Then the command stops.
+			if ((player == null) || !player.isOnline()) {
+				this.notOnline(sender, playerArg);
+				break operations;
+			}
+			// Otherwise, the command will send a message to the sender with pinged player's
+			// ping. Then the command stops.
+			this.pingOther(sender, player);
 		}
-		final String playerArg = args[0];
-		if (playerArg.equals(sender.getName())) {
-			if (!sender.hasPermission("slartping.me")) { return this.noPermission((Player) sender); }
-			return this.pingMe((Player) sender);
-		}
-		if (!sender.hasPermission("slartping.others")) { return this.noPermissionOthers((Player) sender); }
-		final Player player = this.instance.getServer().getPlayer(playerArg);
-		if ((player == null) || !player.isOnline()) { return this.notOnline((Player) sender, playerArg); }
-		return this.pingOther(sender, player);
+		return true;
 	}
 
-	private boolean noPermission(final Player clientPlayer) {
+	// Methods to send messages.
+
+	private void noPermission(final Player clientPlayer) {
 		clientPlayer.sendMessage(ChatReplacer.colorize(this.instance.getConfig().getString("no-permission")));
-		return true;
 	}
 
-	private boolean noPermissionOthers(final Player clientPlayer) {
+	private void noPermissionOthers(final Player clientPlayer) {
 		clientPlayer.sendMessage(this.prefix + ChatReplacer.colorize(this.instance.getConfig().getString("no-permission-others")));
-		return true;
 	}
 
-	private boolean notOnline(final Player clientPlayer, final String pingedPlayer) {
-		clientPlayer.sendMessage(this.prefix + ChatReplacer.replacePlayer(this.instance.getConfig().getString("not-online"), pingedPlayer));
-		return true;
+	private void notOnline(final CommandSender sender, final String pingedPlayer) {
+		sender.sendMessage(this.prefix + ChatReplacer.replacePlayer(this.instance.getConfig().getString("not-online"), pingedPlayer));
 	}
 
-	private boolean notPlayer(final CommandSender commandSender) {
+	private void notPlayer(final CommandSender commandSender) {
 		commandSender.sendMessage(ChatReplacer.colorize(this.instance.getConfig().getString("not-player")));
-		return true;
 	}
 
-	private boolean pingMe(final Player player) {
+	private void pingMe(final Player player) {
 		final int ping = ((CraftPlayer) player).getHandle().ping;
 		player.sendMessage(this.prefix + ChatReplacer.replacePing(this.instance.getConfig().getString("ping-msg"), ping));
-		return true;
 	}
 
-	private boolean pingOther(final CommandSender clientPlayer, final Player pingedPlayer) {
+	private void pingOther(final CommandSender clientPlayer, final Player pingedPlayer) {
 		final int ping = ((CraftPlayer) pingedPlayer).getHandle().ping;
 		clientPlayer.sendMessage(
 				this.prefix + ChatReplacer.replacePingPlayer(this.instance.getConfig().getString("ping-other-msg"), ping, pingedPlayer.getName()));
-		return true;
 	}
+
+	// End of code.
 }

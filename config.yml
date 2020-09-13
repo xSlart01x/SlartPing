@@ -11,10 +11,10 @@
 ###################################################################
 
 prefix: "&6SlartPing &7>> "
-ping-msg: "&aIl tuo ping \u00e8 di &b%PING% &ams."
-ping-other-msg: "&aIl ping del giocatore &b %PLAYER% &a\u00e8 di &b%PING% &ams."
-no-permission: "&4Non hai il permesso per utilizzare questo comando."
-no-permission-others: "&4Non hai il permesso per visualizzare il ping di altri utenti."
-not-player: "&4Questo comando pu\u00f2 essere utilizzato solo in game!"
-not-online: "&cIl giocatore &a%PLAYER% &cnon \u00e8 online!"
-config-reload: "&eConfigurazione ricaricata."
+ping-msg: "&aYour ping is &b%PING% &ams."
+ping-other-msg: "&aThe ping of the player &b %PLAYER% &ais &b%PING% &ams."
+no-permission: "&4You do not have permission to do this."
+no-permission-others: "&4You do not have permission to view the ping of other players."
+not-player: "&4This command can be used only by players!"
+not-online: "&cThe player &a%PLAYER% &cis not online!"
+config-reload: "&eConfiguration reloaded successfully."

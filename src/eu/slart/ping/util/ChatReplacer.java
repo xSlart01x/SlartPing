@@ -2,12 +2,12 @@ package eu.slart.ping.util;
 
 import org.bukkit.ChatColor;
 
-@SuppressWarnings("nls")
+// Utility class:
+// Used to send properly formatted chat messages.
 public class ChatReplacer {
 
 	public static String colorize(final String str) {
-		final String newString = ChatColor.translateAlternateColorCodes('&', str);
-		return newString;
+		return ChatColor.translateAlternateColorCodes('&', str);
 	}
 
 	public static String replacePing(final String str, final int ping) {
