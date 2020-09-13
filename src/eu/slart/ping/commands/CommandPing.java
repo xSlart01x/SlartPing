@@ -94,8 +94,8 @@ public class CommandPing implements CommandExecutor {
 		clientPlayer.sendMessage(this.prefix + ChatReplacer.colorize(this.instance.getConfig().getString("no-permission-others")));
 	}
 
-	private void notOnline(final CommandSender sender, final String pingedPlayer) {
-		sender.sendMessage(this.prefix + ChatReplacer.replacePlayer(this.instance.getConfig().getString("not-online"), pingedPlayer));
+	private void notOnline(final CommandSender commandSender, final String pingedPlayer) {
+		commandSender.sendMessage(this.prefix + ChatReplacer.replacePlayer(this.instance.getConfig().getString("not-online"), pingedPlayer));
 	}
 
 	private void notPlayer(final CommandSender commandSender) {
